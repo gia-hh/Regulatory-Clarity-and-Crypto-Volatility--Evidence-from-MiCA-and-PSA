@@ -1,9 +1,6 @@
 """
 1_data_processing.py
-====================
-数据清洗与特征构造。输入 merged_data.csv，输出 processed_data.csv。
-
-主要做了什么：
+===================
 1. 统一数据类型，删除缺失值
 2. 计算 log return（更符合金融时序分析假设）
 3. 构造 Running Variable（距离事件日期的天数），用于后续窗口分析和 RDD
@@ -11,10 +8,7 @@
 5. 把公告日和生效日分开标注（用于检验市场是否提前反应）
 6. 计算 Realized Volatility（作为 GARCH 建模的检验基准）
 
-【为什么这样做】
-- Running Variable 是 RDD 的核心：原始代码用 abs(RegSin)<=window 筛窗口，
-  但 RegSin 是 0/1 dummy，这个逻辑是错的。
-  正确做法是用「距事件的天数」作为 running variable。
+- RDD ：用「距事件的天数」作为 running variable。
 - 公告日 vs 生效日分开：如果市场在公告日就反应了，说明信息被提前定价，
   这是"不确定性消除"假说的直接支撑证据。
 """

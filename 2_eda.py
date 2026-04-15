@@ -1,19 +1,14 @@
 """
 2_eda.py
 ========
-探索性分析（EDA）+ ARCH 效应检验。
+EDA+ ARCH 效应检验
 
-主要内容：
 1. 各币种收益率时序图（标注政策事件）
 2. 波动率聚集可视化（视觉上支持使用 GARCH）
 3. 正态性检验（JB test）→ 证明 OLS 残差假设不成立
 4. ARCH 效应检验（Engle's LM test）→ 正式验证需要 GARCH
 5. ADF 单位根检验 → 验证时序平稳性
 
-【为什么要做 EDA】
-在进入 GARCH 建模之前，需要用统计检验"证明"
-为什么 OLS 是不够的，这样模型选择才有依据，
-面试/答辩时才能说"我是通过检验选的模型，不是拍脑袋"。
 """
 
 import pandas as pd
@@ -35,8 +30,8 @@ fig, axes = plt.subplots(len(COINS), 1, figsize=(14, 3 * len(COINS)), sharex=Tru
 for ax, coin in zip(axes, COINS):
     sub = df[df["Symbol"] == coin].sort_values("Date")
     ax.plot(sub["Date"], sub["log_return"], lw=0.6, color="steelblue", alpha=0.8)
-    ax.axvline(PSA_DATE,  color="red",    lw=1.2, ls="--", label="PSA 生效")
-    ax.axvline(MICA_DATE, color="orange", lw=1.2, ls="--", label="MiCA 发布")
+    ax.axvline(PSA_DATE,  color="red",    lw=1.2, ls="--", label="PSA in effect")
+    ax.axvline(MICA_DATE, color="orange", lw=1.2, ls="--", label="MiCA annouced")
     # 标注所有关键节点（浅色）
     for kd in KEY_DATES:
         ax.axvline(kd, color="gray", lw=0.5, ls=":", alpha=0.4)
@@ -46,7 +41,7 @@ for ax, coin in zip(axes, COINS):
 axes[0].legend(loc="upper left", fontsize=8)
 axes[-1].xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
 plt.xticks(rotation=30)
-plt.suptitle("Log Returns by Coin（含政策事件标注）", fontsize=12)
+plt.suptitle("Log Returns by Coin(Events Marked)", fontsize=12)
 plt.tight_layout()
 plt.savefig(f"{OUTPUT_DIR}eda_log_returns.png", dpi=150, bbox_inches="tight")
 plt.show()
@@ -65,7 +60,7 @@ for ax, coin in zip(axes.flatten(), COINS):
     ax.set_title(coin, fontsize=10)
     ax.set_xlabel("")
 
-plt.suptitle("Squared Log Returns（波动率聚集：如存在则支持使用 GARCH）", fontsize=11)
+plt.suptitle("Squared Log Returns(volatility clustering: if exists then supports using GARCH)", fontsize=11)
 plt.tight_layout()
 plt.savefig(f"{OUTPUT_DIR}eda_volatility_clustering.png", dpi=150, bbox_inches="tight")
 plt.show()
