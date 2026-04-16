@@ -55,7 +55,6 @@ df["realized_vol_22d"] = df.groupby("Symbol")["log_return"].transform(
 
 # ── Running Variable：距各事件日期的天数 ──────────────────
 # 正数 = 事件之后，负数 = 事件之前
-# 【关键修正】原始代码用 RegSin(0/1) 做 window 筛选是错误的
 df["days_to_PSA"]  = (df["Date"] - PSA_DATE).dt.days
 df["days_to_MiCA"] = (df["Date"] - MICA_DATE).dt.days
 

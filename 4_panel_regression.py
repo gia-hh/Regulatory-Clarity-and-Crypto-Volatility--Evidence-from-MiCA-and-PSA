@@ -1,7 +1,7 @@
 """
 4_panel_regression.py
 =====================
-面板回归分析 + 稳健性检验。
+面板回归分析 + 稳健性检验
 
 模块：
 A. 基准回归：全样本面板 OLS（保留，作为与 GARCH 的对比基准）
@@ -166,13 +166,11 @@ for policy, ann_dummy, enf_dummy, controls, event_date in [
         print(summary_key.to_string(index=False))
 
 # ══════════════════════════════════════════════════════════
-# D. 分币种异质性（修正原始代码的 bug）
+# D. 分币种异质性
 # ══════════════════════════════════════════════════════════
 print("\n" + "=" * 60)
 print("D. 分币种异质性分析")
 print("=" * 60)
-print("【原始代码 bug 修正】：原代码 df = df[df['Symbol']==coin] 在循环内")
-print("会导致每次 df 缩小，第二个币种开始数据已被截断，此处已修正。\n")
 
 dep_main = DEP_VARS["vol"]
 coef_plot = {"PSA": {}, "MiCA": {}}

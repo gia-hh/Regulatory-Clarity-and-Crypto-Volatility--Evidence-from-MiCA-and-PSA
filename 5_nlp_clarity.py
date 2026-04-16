@@ -2,7 +2,6 @@
 5_nlp_clarity.py
 ================
 用 Loughran-McDonald (L-M) 金融词典量化政策文本的监管清晰度，
-替代原始代码中人为设定的 Score_PSA=0.29 / Score_MiCA=1.0。
 
 分析框架：
 1. 用 L-M 词典计算不确定性词汇密度（Uncertainty Word Density）
@@ -17,16 +16,8 @@
 
 【为什么用 L-M 词典】
 L-M 词典是金融文本分析的学术标准（Loughran & McDonald 2011, JF）。
-用它来衡量"不确定性"比自己造关键词列表有文献背书，
-面试/答辩时可以直接引用："我参考了 Loughran-McDonald 金融词典"。
+用它来衡量"不确定性"比自己造关键词列表有文献背书，也更容易被学术界接受。虽然它不是专门针对监管文本设计的，但其中的"uncertainty"和"constraining"词汇在政策文本中同样适用。
 
-【L-M 词典获取方式】
-从官网免费下载：
-https://sraf.nd.edu/loughranmcdonald-master-dictionary/
-下载 Loughran-McDonald_MasterDictionary_XXXX.csv
-放在同目录下，重命名为 LM_dictionary.csv
-
-如果暂时没有词典文件，代码会自动使用内置的精简版词表（约100词）运行。
 """
 
 import os
@@ -36,6 +27,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import matplotlib
+matplotlib.rcParams['font.family'] = ['PingFang SC', 'STHeiti', 'Heiti SC', 'Arial Unicode MS', 'sans-serif']
+matplotlib.rcParams['axes.unicode_minus'] = False
 from collections import Counter
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -84,7 +78,6 @@ LM_CONSTRAINING_BUILTIN = {
 def load_lm_dictionary(filepath="LM_dictionary.csv"):
     """
     加载完整 L-M 词典。
-    如果文件不存在，返回内置精简版并提示下载。
     """
     if os.path.exists(filepath):
         lm = pd.read_csv(filepath)
@@ -469,10 +462,7 @@ if __name__ == "__main__":
     export_clarity_for_regression(results, "processed_data.csv")
 
     print("\n✅ NLP 分析完成！")
-    print("\n【结果解读提示】")
-    print("  - 如果 MiCA Clarity Score > PSA Clarity Score：")
-    print("    说明 MiCA 条款更明确，对市场不确定性消除效果更强")
-    print("  - 如果两者相近：")
-    print("    支持你的结论——两个政策效果相似是因为清晰度相近")
+    print("  - 两者相近：")
+    print("    支持结论——两个政策效果相似是因为清晰度相近")
     print("  - 在面板回归中加入 RegEU_Clarity 交互项后：")
     print("    系数显著 → 波动率下降幅度与政策清晰度正相关，逻辑链完整")
