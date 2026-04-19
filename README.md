@@ -266,3 +266,19 @@ python 6_macro_robustness.py
 ```
 
 All outputs (figures, LaTeX tables) are written to the `output/` directory.
+
+---
+
+## Extension: Avellaneda-Stoikov Market-Making Simulation
+
+Uses EGARCH-estimated volatility (7D_EWMA) as risk input to the 
+Avellaneda-Stoikov (2008) optimal market-making model. Simulates 
+dynamic bid-ask spread and inventory PnL for BTC and ETH, 2019–2024.
+
+Key findings:
+- Mean optimal spread ~1.05% (BTC), ~1.09% (ETH) — consistent with 
+  crypto market microstructure
+- Post-MiCA spread compression: −0.8% for both BTC and ETH, 
+  consistent with uncertainty resolution hypothesis
+- ETH spread widened +6.9% in PSA window, capturing COVID-driven 
+  volatility spike (Jan 2020)
